@@ -1,7 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build FULL site, all modules
-
+name: Build and deploy THE_SPERM
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -87,6 +86,7 @@ jobs:
           source ./emsdk_env.sh
           echo Install emsdk DONE
           cd ..
+          echo Build THE_SPERM
           cd svlt_web
           mv ../prod_modules/_packedModules ../packed_modules
           mv ../glaze .
@@ -94,62 +94,9 @@ jobs:
           mv ../3rdparty .
           cp studio/make.msvc/StudioApp/src/zip/ioapi.h ./src/ioapi.h
           cp glaze/include/unzip.h ./src/unzip.h
-          cat ../packed_modules/DIGESTION_zip_p0* > ../packed_modules/DIGESTION.zip
-          cat ../packed_modules/HUMANANATOMY_zip_p0* > ../packed_modules/HUMANANATOMY.zip
-          cat ../packed_modules/MUSCLE_TISSUE_zip_p0* > ../packed_modules/MUSCLE_TISSUE.zip
-          cat ../packed_modules/PERIODIC_TABLE_zip_p0* > ../packed_modules/PERIODIC_TABLE.zip
-          cat ../packed_modules/THE_CELL_zip_p0* > ../packed_modules/THE_CELL.zip
-          cat ../packed_modules/THE_EARS_zip_p0* > ../packed_modules/THE_EARS.zip
-          cat ../packed_modules/THE_EARTH_zip_p0* > ../packed_modules/THE_EARTH.zip
-          cat ../packed_modules/THE_KIDNEYS_zip_p0* > ../packed_modules/THE_KIDNEYS.zip
-          cat ../packed_modules/THE_LUNGS_zip_p0* > ../packed_modules/THE_LUNGS.zip
-          cat ../packed_modules/THE_SOLAR_SYSTEM_zip_p0* > ../packed_modules/THE_SOLAR_SYSTEM.zip
-          ./build.sh 2D_SHAPES 2D_SHAPES.zip vScene_rectangle
-          ./build.sh 3D_SHAPES 3D_SHAPES.zip vScene_pentagonalPrism
-          ./build.sh ALLOTROPES_OF_CARBON ALLOTROPES_OF_CARBON.zip vScene_aoc_diamond
-          ./build.sh BALANCE_ORGANS BALANCE_ORGANS.zip vScene_membranousLabyrinth
-          ./build.sh CHEMICAL_BONDS CHEMICAL_BONDS.zip vScene_NaCl_IonicBonds
-          ./build.sh CLIMATE CLIMATE.zip vScene_Vegetation
-          ./build.sh DIGESTION DIGESTION.zip vScene_2_stomach
-          ./build.sh DNA DNA.zip vScene_Replication
-          ./build.sh ELECTRICITY ELECTRICITY.zip vScene_ACDC
-          ./build.sh ELECTROMAGNETIC_RADIATION ELECTROMAGNETIC_RADIATION.zip vScene_excitedState
-          ./build.sh FISSION_FUSION FISSION_FUSION.zip vScene_fission
-          ./build.sh GEOMETRY_SHAPES GEOMETRY_SHAPES.zip vScene_Volume
-          ./build.sh GREENHOUSE_EFFECT GREENHOUSE_EFFECT.zip vScene_greenhouseGases
-          ./build.sh HALF_LIFE HALF_LIFE.zip vScene_halfLife
-          ./build.sh HUMANANATOMY HUMANANATOMY.zip vScene_HumanAnatomy
-          ./build.sh HYDRAULICS HYDRAULICS.zip vScene_DiscBrake
-          ./build.sh INTERACTIVE_MATHEMATICS INTERACTIVE_MATHEMATICS.zip vScene_CorrespondingAngles
-          ./build.sh ISOTOPES ISOTOPES.zip vScene_Isotopes_U
-          ./build.sh LEVERS LEVERS.zip vScene_LeverPrinciple
-          ./build.sh MATHEMATICAL_FORMULAS MATHEMATICAL_FORMULAS.zip vScene_PythagoreanTheorem
-          ./build.sh MUSCLESMOVEMENT MUSCLESMOVEMENT.zip vScene_KneeMovement
-          ./build.sh MUSCLE_TISSUE MUSCLE_TISSUE.zip vScene_cardiacMuscle
-          ./build.sh NEWTONSLAW NEWTONSLAW.zip vScene_ObjectInMotion
-          ./build.sh OCTET_RULE OCTET_RULE.zip vScene_octetRule_CO2
-          ./build.sh OZONE_LAYER OZONE_LAYER.zip vScene_ozoneLayer
-          ./build.sh PERIODIC_TABLE PERIODIC_TABLE.zip vScene_PeriodicTable
-          ./build.sh PHOTOSYNTHESIS PHOTOSYNTHESIS.zip vScene_Photosynthesis
-          ./build.sh PLATE_TECTONICS PLATE_TECTONICS.zip vScene_plateTectonics
-          ./build.sh RADIATION RADIATION.zip vScene_alphaBetaGammaRadiation
-          ./build.sh REFRACTION REFRACTION.zip vScene_ConvergingandDivergingLenses
-          ./build.sh SIMPLE_MACHINES SIMPLE_MACHINES.zip vScene_sm_lever
-          ./build.sh THE_CELL THE_CELL.zip vScene_mitosis
-          ./build.sh THE_EARS THE_EARS.zip vScene_EarFunction
-          ./build.sh THE_EARTH THE_EARTH.zip vScene_TheEarth
-          ./build.sh THE_EYES THE_EYES.zip vScene_TheEyes
-          ./build.sh THE_HEART THE_HEART.zip vScene_structure
-          ./build.sh THE_KIDNEYS THE_KIDNEYS.zip vScene_TheKidneys
-          ./build.sh THE_LUNGS THE_LUNGS.zip vScene_BreathingMuscles
-          ./build.sh THE_NERVOUSSYSTEM THE_NERVOUSSYSTEM.zip vScene_NervousSystem
-          ./build.sh THE_SKELETON THE_SKELETON.zip vScene_theSkeleton
-          ./build.sh THE_SOLAR_SYSTEM THE_SOLAR_SYSTEM.zip vScene_TheSolarSystem
           ./build.sh THE_SPERM THE_SPERM.zip vScene_TheSperm
-          ./build.sh VECTORS VECTORS.zip vScene_Lines
-          ./build.sh WATER WATER.zip vScene_WaterMolecule
           cd ..
-          echo Build ALL
+          echo Build THE_SPERM DONE
           
       - name: Archive artifact
         shell: bash
@@ -157,50 +104,7 @@ jobs:
         run: |
           mkdir _site
           cp myrepodir/index.html _site/index.html
-          cp -r svlt_web/SVLT2D_SHAPES_vScene_rectangle _site/2D_SHAPES
-          cp -r svlt_web/SVLT3D_SHAPES_vScene_pentagonalPrism _site/3D_SHAPES
-          cp -r svlt_web/SVLTALLOTROPES_OF_CARBON_vScene_aoc_diamond _site/ALLOTROPES_OF_CARBON
-          cp -r svlt_web/SVLTBALANCE_ORGANS_vScene_membranousLabyrinth _site/BALANCE_ORGANS
-          cp -r svlt_web/SVLTCHEMICAL_BONDS_vScene_NaCl_IonicBonds _site/CHEMICAL_BONDS
-          cp -r svlt_web/SVLTCLIMATE_vScene_Vegetation _site/CLIMATE
-          cp -r svlt_web/SVLTDIGESTION_vScene_2_stomach _site/DIGESTION
-          cp -r svlt_web/SVLTDNA_vScene_Replication _site/DNA
-          cp -r svlt_web/SVLTELECTRICITY_vScene_ACDC _site/ELECTRICITY
-          cp -r svlt_web/SVLTELECTROMAGNETIC_RADIATION_vScene_excitedState _site/ELECTROMAGNETIC_RADIATION
-          cp -r svlt_web/SVLTFISSION_FUSION_vScene_fission _site/FISSION_FUSION
-          cp -r svlt_web/SVLTGEOMETRY_SHAPES_vScene_Volume _site/GEOMETRY_SHAPES
-          cp -r svlt_web/SVLTGREENHOUSE_EFFECT_vScene_greenhouseGases _site/GREENHOUSE_EFFECT
-          cp -r svlt_web/SVLTHALF_LIFE_vScene_halfLife _site/HALF_LIFE
-          cp -r svlt_web/SVLTHUMANANATOMY_vScene_HumanAnatomy _site/HUMANANATOMY
-          cp -r svlt_web/SVLTHYDRAULICS_vScene_DiscBrake _site/HYDRAULICS
-          cp -r svlt_web/SVLTINTERACTIVE_MATHEMATICS_vScene_CorrespondingAngles _site/INTERACTIVE_MATHEMATICS
-          cp -r svlt_web/SVLTISOTOPES_vScene_Isotopes_U _site/ISOTOPES
-          cp -r svlt_web/SVLTLEVERS_vScene_LeverPrinciple _site/LEVERS
-          cp -r svlt_web/SVLTMATHEMATICAL_FORMULAS_vScene_PythagoreanTheorem _site/MATHEMATICAL_FORMULAS
-          cp -r svlt_web/SVLTMUSCLESMOVEMENT_vScene_KneeMovement _site/MUSCLESMOVEMENT
-          cp -r svlt_web/SVLTMUSCLE_TISSUE_vScene_cardiacMuscle _site/MUSCLE_TISSUE
-          cp -r svlt_web/SVLTNEWTONSLAW_vScene_ObjectInMotion _site/NEWTONSLAW
-          cp -r svlt_web/SVLTOCTET_RULE_vScene_octetRule_CO2 _site/OCTET_RULE
-          cp -r svlt_web/SVLTOZONE_LAYER_vScene_ozoneLayer _site/OZONE_LAYER
-          cp -r svlt_web/SVLTPERIODIC_TABLE_vScene_PeriodicTable _site/PERIODIC_TABLE
-          cp -r svlt_web/SVLTPHOTOSYNTHESIS_vScene_Photosynthesis _site/PHOTOSYNTHESIS
-          cp -r svlt_web/SVLTPLATE_TECTONICS_vScene_plateTectonics _site/PLATE_TECTONICS
-          cp -r svlt_web/SVLTRADIATION_vScene_alphaBetaGammaRadiation _site/RADIATION
-          cp -r svlt_web/SVLTREFRACTION_vScene_ConvergingandDivergingLenses _site/REFRACTION
-          cp -r svlt_web/SVLTSIMPLE_MACHINES_vScene_sm_lever _site/SIMPLE_MACHINES
-          cp -r svlt_web/SVLTTHE_CELL_vScene_mitosis _site/THE_CELL
-          cp -r svlt_web/SVLTTHE_EARS_vScene_EarFunction _site/THE_EARS
-          cp -r svlt_web/SVLTTHE_EARTH_vScene_TheEarth _site/THE_EARTH
-          cp -r svlt_web/SVLTTHE_EYES_vScene_TheEyes _site/THE_EYES
-          cp -r svlt_web/SVLTTHE_HEART_vScene_structure _site/THE_HEART
-          cp -r svlt_web/SVLTTHE_KIDNEYS_vScene_TheKidneys _site/THE_KIDNEYS
-          cp -r svlt_web/SVLTTHE_LUNGS_vScene_BreathingMuscles _site/THE_LUNGS
-          cp -r svlt_web/SVLTTHE_NERVOUSSYSTEM_vScene_NervousSystem _site/THE_NERVOUSSYSTEM
-          cp -r svlt_web/SVLTTHE_SKELETON_vScene_theSkeleton _site/THE_SKELETON
           cp -r svlt_web/SVLTTHE_SPERM_vScene_TheSperm _site/THE_SPERM
-          cp -r svlt_web/SVLTTHE_SOLAR_SYSTEM_vScene_TheSolarSystem _site/THE_SOLAR_SYSTEM
-          cp -r svlt_web/SVLTVECTORS_vScene_Lines _site/VECTORS
-          cp -r svlt_web/SVLTWATER_vScene_WaterMolecule _site/WATER
           tar \
             --dereference --hard-dereference \
             --directory "_site" \
@@ -208,7 +112,14 @@ jobs:
             --exclude=.git \
             --exclude=.github \
             .
-            
+          
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: THE_SPERM_HTML
+          path: |
+            svlt_web/SVLTTHE_SPERM_vScene_TheSperm
+
       - name: Upload artifact
         uses: actions/upload-artifact@main
         with:
