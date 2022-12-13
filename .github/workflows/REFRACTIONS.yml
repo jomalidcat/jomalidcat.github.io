@@ -1,0 +1,151 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build and deploy REFRACTION
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with: 
+          path: myrepodir
+
+      # Check out svlt_web
+      - name: Check out glaze
+        uses: actions/checkout@master
+        with:
+          repository: Sensavis/svltweb_ghpoc
+          token: ${{ secrets.my_pat }}
+          path: svlt_web
+
+      # Check out glaze
+      - name: Check out glaze
+        uses: actions/checkout@master
+        with:
+          repository: Sensavis/glaze_ghpoc
+          token: ${{ secrets.my_pat }}
+          path: glaze
+
+
+      # Check out studio
+      - name: Check out studio
+        uses: actions/checkout@master
+        with:
+          repository: Sensavis/studio_ghpoc
+          token: ${{ secrets.my_pat }}
+          path: studio
+
+      # Check out 3rdparty
+      - name: Check out 3rdparty
+        uses: actions/checkout@master
+        with:
+          repository: Sensavis/3rdparty_ghpoc
+          token: ${{ secrets.my_pat }}
+          path: 3rdparty
+
+      # Check out prod_modules
+      - name: Check out prod_modules
+        uses: actions/checkout@master
+        with:
+          repository: Sensavis/prod_modules_ghpoc
+          token: ${{ secrets.my_pat }}
+          path: prod_modules
+
+      # Check out module_env
+      - name: Check out module_env
+        uses: actions/checkout@master
+        with:
+          repository: Sensavis/module_env_ghpoc
+          token: ${{ secrets.my_pat }}
+          path: module_env
+          
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Install emsdk
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install 2.0.15
+          ./emsdk activate 2.0.15
+          source ./emsdk_env.sh
+          echo Install emsdk DONE
+          cd ..
+          echo Build REFRACTION
+          cd svlt_web
+          mv ../prod_modules/_packedModules ../packed_modules
+          mv ../glaze .
+          mv ../studio .
+          mv ../3rdparty .
+          cp studio/make.msvc/StudioApp/src/zip/ioapi.h ./src/ioapi.h
+          cp glaze/include/unzip.h ./src/unzip.h
+          ./build.sh REFRACTION REFRACTION.zip vScene_ConvergingandDivergingLenses
+          cd ..
+          echo Build REFRACTION DONE
+          
+      - name: Archive artifact
+        shell: bash
+        if: runner.os == 'Linux'
+        run: |
+          mkdir _site
+          cp myrepodir/index.html _site/index.html
+          cp -r svlt_web/SVLTREFRACTION_vScene_ConvergingandDivergingLenses _site/REFRACTION
+          tar \
+            --dereference --hard-dereference \
+            --directory "_site" \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
+            .
+          
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: REFRACTION_HTML
+          path: |
+            svlt_web/SVLTREFRACTION_vScene_ConvergingandDivergingLenses
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          
+  # Deploy job
+  deploy:
+    # Add a dependency to the build job
+    needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+        
