@@ -94,6 +94,9 @@ jobs:
           mv ../3rdparty .
           cp studio/make.msvc/StudioApp/src/zip/ioapi.h ./src/ioapi.h
           cp glaze/include/unzip.h ./src/unzip.h
+          cat CMakeLists.txt | sed "s/ \-O3 / \-g /g" > CMakeLists.txt2
+          cp CMakeLists.txt2 CMakeLists.txt
+          rm CMakeLists.txt2           
           ./build.sh REFRACTION REFRACTION.zip vScene_ConvergingandDivergingLenses
           cd ..
           echo Build REFRACTION DONE
